@@ -1,0 +1,111 @@
+/* VERÝ TABANI  DERSÝ SORGULAR MODÜLÜ ÖRNEK ÇALIÞMALARI */
+--VERÝ TABANI OLUÞTURMA
+create database Pazarlama
+--Veritabanýný Silme
+--drop database Pazarlama
+
+--Kullanýlacak Veritabaný Belirleme
+use Pazarlama
+
+--Tablo Oluþturma
+create table tblMusteri(
+ID int primary key identity(1,1),
+AdSoyad nvarchar(50),
+DogumTarihi date,
+Tel varchar(20),
+Adres nvarchar(150),
+) 
+--Tablo Silme
+--drop table tblMusteri
+
+--Tablo Kayýt Ekleme
+insert into tblMusteri(AdSoyad,DogumTarihi,Tel,Adres)
+values('Fatma Altay','1996-04-29','322 678 89 99','Ahmet Özcan Cad.'),
+('Aynur Uluþan','1996-04-29','322 678 89 99','Nalçacý Cad.'),
+('Hafize Güngör','1996-04-29','322 678 89 99','Alaadin  Cad.'),
+('Kübra D. Kahya','1996-04-29','322 678 89 99','LaleBahçe Cad.'),
+('Emine Kamacý','1996-04-29','322 678 89 99','Muhacir Cad.')
+
+------ÝLÝÞKÝSEL TABLO YAPMA-----
+
+create table tblBirim(
+ID int primary key identity(1,1),
+BirimAd nvarchar (20)
+
+)
+insert into tblBirim values('Satýþ')
+,('Depo')
+,('Muhasebe')
+,('Bilgi Ýþlem')
+,('Ýdare')
+
+create table tblPersonel(
+ID int primary key identity(1,1),
+Ad nvarchar(30),
+Soyad nvarchar(20),
+Maas money,
+BirimID int references tblBirim(ID) 
+)
+
+insert into tblPersonel
+values('Adem','Yerebakan',2200,1)
+,('Ece','Gün',1500,3)
+,('Murat','Apak',3000,5)
+,('Deniz','Gece',2400,4)
+,('Melek','Kader',1800,2)
+,('Emre','Çalan',2100,1)
+
+
+--Seçme Sorgusu
+select * from tblMusteri
+select * from tblBirim
+select * from tblPersonel
+-------------------------------------
+--Tek Bir Alan Seçme
+select AdSoyad from tblMusteri
+--Birden Alaný Seçme
+select AdSoyad,DogumTarihi from tblMusteri
+--Birden Alaný Yer Deðiþtirerek Seçme 
+select DogumTarihi,AdSoyad from tblMusteri
+
+--Ýstenilen Kaydý veya Kayýtlarý Getirme
+
+--Id'si 1 olan kaydý getirir
+select * from tblMusteri
+where ID=18
+
+--Id'si 3 ve 2 olan kayýtlarý getirir
+select * from tblMusteri
+where ID=18 or ID=17
+
+--AdSoyadý 'Fatma Altay' olaný getirir
+select *from tblMusteri
+where AdSoyad='Fatma Altay'
+
+--Id'si 1 olan kaydý siler
+delete from tblMusteri
+where ID=19
+
+--Kayýt Güncelleme
+update tblMusteri
+set AdSoyad='Arif UYSAL'
+where ID=16
+
+select * from tblMusteri
+update tblMusteri
+set AdSoyad='Arif UYSAL',DogumTarihi='1976-10-01',Adres='Mut Mersin'
+where ID=16
+select * from tblMusteri
+
+
+--tblPersonel de bulunan maaþý 2000 den düþük kayýtlarý getirir
+select * from tblPersonel
+where Maas<=2000
+
+--tblPersonel de bulunan maaþý 2000 den yüksek ve 2500 den düþük kayýtlarý getirir
+select * from tblPersonel
+where Maas>2000 and Maas<2500
+
+--tblPersonel de bulunan maaþý 2000 den yüksek ve 2500 den düþük kayýtlarý getirir
+select * from tblPersonel
+where Maas between 2000 and 2500
